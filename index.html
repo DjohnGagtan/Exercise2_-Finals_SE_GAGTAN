@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up & Login</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="server.js"></script>
+</head>
+<body>
+    <!-- Sign Up Container -->
+    <div class="container" id="signup-container">
+        <h2>Sign Up</h2>
+        <input type="text" id="signup-username" placeholder="Username" required>
+        <input type="email" id="signup-email" placeholder="Email" required>
+        <input type="password" id="signup-password" placeholder="Password" required>
+        <button onclick="signup()">Sign Up</button>
+        <p>Already have an account? <a href="#" onclick="toggleForm()">Log in</a></p>
+    </div>
+
+    <!-- Email Verification Message -->
+    <div id="verification-message" style="display:none;">
+        <h2>Email Verified!</h2>
+        <p>Your email has been successfully verified.</p>
+        <!-- Button to continue to the login page -->
+        <button onclick="goToLogin()">Go to Login</button>
+    </div>
+
+    <!-- Log In Container -->
+    <div class="container" id="login-container" style="display: none;">
+        <h2>Log In</h2>
+        <input type="text" id="login-username" placeholder="Username" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button onclick="login()">Log In</button>
+        <p>Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a></p>
+    </div>
+
+    <script>
+        function toggleForm() {
+            document.getElementById("signup-container").style.display = 
+                document.getElementById("signup-container").style.display === "none" ? "block" : "none";
+            document.getElementById("login-container").style.display = 
+                document.getElementById("login-container").style.display === "none" ? "block" : "none";
+        }
+
+        function signup() {
+            let username = document.getElementById("signup-username").value;
+            let email = document.getElementById("signup-email").value;
+            let password = document.getElementById("signup-password").value;
+            
+            if (username && email && password) {
+                localStorage.setItem("username", username);
+                localStorage.setItem("password", password);
+                alert("Sign-up successful! Your email has been verified.");
+                showVerificationMessage();
+            } else {
+                alert("Please fill all fields.");
+            }
+        }
+
+        function login() {
+            let username = document.getElementById("login-username").value;
+            let password = document.getElementById("login-password").value;
+            
+            let storedUsername = localStorage.getItem("username");
+            let storedPassword = localStorage.getItem("password");
+            
+            if (username === storedUsername && password === storedPassword) {
+                alert("Login successful!");
+            } else {
+                alert("Invalid credentials. Try again.");
+            }
+        }
+
+        // Display the verification message after signup
+        function showVerificationMessage() {
+            document.getElementById("signup-container").style.display = "none";
+            document.getElementById("verification-message").style.display = "block";
+        }
+
+        // Transition to login page after email verification
+        function goToLogin() {
+            document.getElementById("verification-message").style.display = "none";
+            document.getElementById("login-container").style.display = "block";
+        }
+    </script>
+</body>
+</html>
